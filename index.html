@@ -5,3 +5,421 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Social Disengagement Monitor</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#FAFAFA;
+  --card:#FFFFFF;
+  --muted:#F1F5F9;
+  --fg:#0F172A;
+  --sub:#64748B;
+  --border:#E2E8F0;
+  --accent:#0052FF;
+  --accent2:#4D7CFF;
+  --red:#EF4444;
+  --red-bg:#FEF2F2;
+  --green:#10B981;
+  --green-bg:#ECFDF5;
+  --amber:#F59E0B;
+  --amber-bg:#FFFBEB;
+  --grad:linear-gradient(135deg,#0052FF,#4D7CFF);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:0.5;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes redglow{0%,100%{box-shadow:0 0 0 4px rgba(239,68,68,0.1);}50%{box-shadow:0 0 0 8px rgba(239,68,68,0.2);}}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* HEADER */
+header{
+  background:var(--card);border-bottom:1px solid var(--border);
+  padding:0 36px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 4px 12px rgba(0,82,255,0.25);
+  animation:float 4s ease-in-out infinite;
+}
+.logo-name{font-family:'Calistoga',serif;font-size:19px;color:var(--fg);}
+
+.live-pill{
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(16,185,129,0.3);background:var(--green-bg);
+  border-radius:999px;padding:6px 16px;
+  font-size:12px;font-weight:600;color:var(--green);
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite;}
+
+.clock{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--sub);}
+
+/* MAIN LAYOUT */
+.page{
+  flex:1;padding:28px 36px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1.8fr 1.4fr;
+  grid-template-rows:auto 1fr;
+  gap:20px;
+}
+
+/* STAT CARDS */
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:28px;box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;
+}
+.stat-card.blue::before{background:var(--grad);}
+.stat-card.red::before{background:linear-gradient(90deg,var(--red),#FF8A8A);}
+
+.stat-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--sub);margin-bottom:12px;}
+.stat-num{font-family:'Calistoga',serif;font-size:72px;line-height:1;letter-spacing:-2px;}
+.stat-num.blue{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-num.red{color:var(--red);}
+.stat-foot{font-size:13px;color:var(--sub);margin-top:10px;}
+
+/* FEED */
+.feed-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);overflow:hidden;
+  display:flex;flex-direction:column;
+  grid-row:1/3;
+}
+.feed-header{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.feed-title{font-size:14px;font-weight:600;}
+.feed-legend{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--sub);}
+.legend-item{display:flex;align-items:center;gap:5px;}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+
+.feed-body{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 30% 40%,rgba(0,82,255,0.05),transparent 60%),var(--muted);
+  position:relative;overflow:hidden;
+}
+.feed-body::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(0,82,255,0.1) 1px,transparent 1px);
+  background-size:28px 28px;opacity:0.4;
+}
+
+.cam-grid{
+  display:grid;
+  grid-template-columns:repeat(3,110px);
+  grid-template-rows:repeat(2,110px);
+  gap:44px;position:relative;z-index:1;
+}
+
+.pcard{
+  width:110px;height:150px;border-radius:16px;
+  background:var(--card);border:2px solid var(--border);
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  position:relative;transition:all 0.3s ease;
+}
+.pcard.engaged{border-color:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,0.12);}
+.pcard.monitoring{border-color:var(--amber);box-shadow:0 0 0 4px rgba(245,158,11,0.12);}
+.pcard.isolated{border-color:var(--red);animation:redglow 1.5s ease-in-out infinite;}
+
+.pcard .avatar{font-size:38px;line-height:1;}
+.pcard .pid{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sub);font-weight:500;}
+
+.pcard .chip{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;
+}
+.pcard .chip.g{background:var(--green);color:#fff;}
+.pcard .chip.a{background:var(--amber);color:#fff;}
+.pcard .chip.r{background:var(--red);color:#fff;}
+
+.pcard .timer{
+  position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  padding:3px 10px;border-radius:999px;white-space:nowrap;border:1px solid;
+}
+.pcard .timer.a{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);}
+.pcard .timer.r{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+
+/* TASK PANEL */
+.task-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);overflow:hidden;
+  display:flex;flex-direction:column;
+  grid-row:1/3;
+}
+.task-header{
+  padding:16px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.task-title{font-size:14px;font-weight:700;}
+.task-count{
+  font-size:11px;font-weight:600;padding:3px 12px;border-radius:999px;transition:all 0.3s;
+}
+.task-count.active{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.3);}
+.task-count.zero{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+
+.task-body{flex:1;overflow-y:auto;}
+
+.no-task{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 24px;gap:12px;text-align:center;min-height:200px;
+}
+.no-task .emoji{font-size:40px;}
+.no-task h3{font-size:15px;font-weight:700;}
+.no-task p{font-size:13px;color:var(--sub);line-height:1.6;}
+
+.task-person{padding:18px 22px;border-bottom:1px solid var(--border);animation:slideIn 0.3s ease;}
+.tph{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.tph-icon{width:42px;height:42px;border-radius:12px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid rgba(239,68,68,0.15);}
+.tph-name{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.tph-badge{font-size:10px;font-weight:600;background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.3);padding:2px 8px;border-radius:999px;}
+.tph-time{font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace;margin-top:3px;}
+
+/* isolation progress */
+.iso-bar{margin-bottom:14px;}
+.iso-bar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:5px;}
+.iso-track{height:6px;background:var(--muted);border-radius:999px;overflow:hidden;}
+.iso-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--amber),var(--red));transition:width 0.6s ease;}
+
+.tasks-list{display:flex;flex-direction:column;gap:8px;}
+.task-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--muted);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;cursor:pointer;transition:all 0.2s ease;
+}
+.task-item:hover{background:#fff;border-color:rgba(0,82,255,0.3);box-shadow:0 2px 10px rgba(0,82,255,0.1);transform:translateX(3px);}
+.task-item.done{background:var(--green-bg);border-color:rgba(16,185,129,0.3);}
+.task-item.done .task-text{text-decoration:line-through;color:var(--sub);}
+.t-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.t-info{flex:1;}
+.task-text{font-size:13px;font-weight:500;line-height:1.4;}
+.task-hint{font-size:11px;color:var(--sub);margin-top:2px;}
+.t-check{color:var(--green);font-size:16px;font-weight:700;align-self:center;}
+
+.new-tasks-btn{
+  width:100%;margin-top:10px;padding:10px;
+  background:transparent;border:1.5px solid var(--border);
+  color:var(--sub);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;
+  border-radius:10px;cursor:pointer;transition:all 0.2s;
+}
+.new-tasks-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,82,255,0.04);}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">👁</div>
+    <div class="logo-name">NoOneLeftAlone.exe</div>
+  </div>
+  <div class="live-pill"><div class="live-dot"></div> Live Detection</div>
+  <div class="clock" id="clock">00:00:00</div>
+</header>
+
+<div class="page">
+
+  <!-- TOTAL PEOPLE -->
+  <div class="stat-card blue">
+    <div class="stat-label">Total People</div>
+    <div class="stat-num blue" id="total">6</div>
+    <div class="stat-foot" id="total-foot">Currently in frame</div>
+  </div>
+
+  <!-- ISOLATED -->
+  <div class="stat-card red">
+    <div class="stat-label">Isolated</div>
+    <div class="stat-num red" id="iso">0</div>
+    <div class="stat-foot" id="iso-foot">No one isolated</div>
+  </div>
+
+  <!-- CAMERA FEED -->
+  <div class="feed-card">
+    <div class="feed-header">
+      <div class="feed-title">Camera Feed</div>
+      <div class="feed-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Engaged</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Watching</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Isolated</div>
+      </div>
+    </div>
+    <div class="feed-body">
+      <div class="cam-grid" id="cam-grid"></div>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="task-card">
+    <div class="task-header">
+      <div class="task-title">🎯 Re-Engagement Tasks</div>
+      <div class="task-count zero" id="task-count">All Clear</div>
+    </div>
+    <div class="task-body" id="task-body">
+      <div class="no-task">
+        <div class="emoji">✅</div>
+        <h3>Everyone is engaged!</h3>
+        <p>Tasks will appear here automatically when someone is isolated for more than 20 seconds.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TASKS=[
+  {icon:'👋',text:'Introduce yourself to someone new',hint:'Walk up to the nearest group'},
+  {icon:'🎤',text:'Share a fun fact about yourself',hint:'Break the ice with a story'},
+  {icon:'☕',text:'Offer to get someone a drink',hint:'Head to the refreshments together'},
+  {icon:'🃏',text:'Join the nearest game or activity',hint:'Games are better with more people!'},
+  {icon:'📸',text:'Take a group selfie',hint:'Will be shown on the main screen'},
+  {icon:'🤝',text:'Meet someone you have not talked to',hint:'Introduce yourself to a new face'},
+  {icon:'🎯',text:'Join the group challenge',hint:'Team up with at least 2 others'},
+  {icon:'💬',text:'Give someone a compliment',hint:'A kind word goes a long way'},
+  {icon:'🌟',text:'Ask for an event recommendation',hint:'What should you not miss today?'},
+  {icon:'🎲',text:'Suggest a fun group activity',hint:'Propose something to those around you'},
+];
+function pickTasks(){return[...TASKS].sort(()=>Math.random()-0.5).slice(0,3);}
+
+const PERSONS=[
+  {id:'P-01',x:1,y:0},{id:'P-02',x:2,y:0},{id:'P-03',x:0,y:1},
+  {id:'P-04',x:1,y:1},{id:'P-05',x:2,y:1},{id:'P-06',x:3,y:0},
+];
+
+let isoThreshold=200,isoTimeout=20;
+let isoStart={},personPos={};
+let taskDone={},assignedTasks={},prevFlagged={};
+let lastStatuses=[];
+
+function getPos(p){return personPos[p.id]||{px:p.x*140+60,py:p.y*160+50};}
+
+function tick(){
+  const t=Date.now()/1000,now=Date.now();
+
+  personPos['P-06']={px:390+Math.sin(t*0.3)*80,py:50+Math.sin(t*0.2)*28};
+  ['P-01','P-02','P-03','P-04','P-05'].forEach((id,i)=>{
+    const b=PERSONS[i];
+    personPos[id]={px:b.x*140+60+Math.sin(t*0.4+i)*10,py:b.y*160+50+Math.cos(t*0.3+i)*7};
+  });
+
+  let isolated={};
+  PERSONS.forEach(p=>{
+    const p1=getPos(p);let md=Infinity;
+    PERSONS.forEach(q=>{if(q.id===p.id)return;const d=Math.hypot(getPos(q).px-p1.px,getPos(q).py-p1.py);if(d<md)md=d;});
+    isolated[p.id]=md>isoThreshold;
+    if(isolated[p.id]){if(!isoStart[p.id])isoStart[p.id]=now;}
+    else{if(isoStart[p.id])delete isoStart[p.id];}
+  });
+
+  let isoCount=0;
+  lastStatuses=PERSONS.map(p=>{
+    const isIso=isolated[p.id];
+    const elapsed=isIso&&isoStart[p.id]?(now-isoStart[p.id])/1000:0;
+    const flagged=elapsed>=isoTimeout;
+    if(flagged){
+      isoCount++;
+      if(!prevFlagged[p.id]){assignedTasks[p.id]=pickTasks();taskDone[p.id]={};prevFlagged[p.id]=true;}
+    }else{
+      if(prevFlagged[p.id]){delete prevFlagged[p.id];delete assignedTasks[p.id];}
+    }
+    return{id:p.id,isIso,elapsed,flagged};
+  });
+
+  const total=PERSONS.length;
+  document.getElementById('total').textContent=total;
+  document.getElementById('iso').textContent=isoCount;
+  document.getElementById('iso-foot').textContent=isoCount?`${isoCount} person${isoCount>1?'s':''} standing alone >20s`:'No one isolated right now ✓';
+  document.getElementById('iso').style.color=isoCount?'var(--red)':'var(--green)';
+
+  const tc=document.getElementById('task-count');
+  tc.textContent=isoCount?isoCount+' Alert'+(isoCount>1?'s':''):'All Clear';
+  tc.className='task-count '+(isoCount?'active':'zero');
+
+  renderFeed(lastStatuses);
+  renderTasks(lastStatuses);
+}
+
+function renderFeed(ss){
+  const g=document.getElementById('cam-grid');g.innerHTML='';
+  ss.forEach((s,i)=>{
+    const p=PERSONS[i];
+    const cls=s.flagged?'isolated':s.isIso?'monitoring':'engaged';
+    const cc=s.flagged?'r':s.isIso?'a':'g';
+    const ct=s.flagged?'Isolated':s.isIso?'Watching':'Engaged';
+    let extra='';
+    if(s.isIso&&!s.flagged)extra=`<div class="timer a">${Math.ceil(isoTimeout-s.elapsed)}s</div>`;
+    else if(s.flagged)extra=`<div class="timer r">Tasks Sent</div>`;
+    const el=document.createElement('div');
+    el.className='pcard '+cls;
+    el.style.gridColumn=p.x+1;el.style.gridRow=p.y+1;
+    el.innerHTML=`<div class="chip ${cc}">${ct}</div><div class="avatar">🧍</div><div class="pid">${s.id}</div>${extra}`;
+    g.appendChild(el);
+  });
+}
+
+function renderTasks(ss){
+  const body=document.getElementById('task-body');
+  const flagged=ss.filter(s=>s.flagged&&assignedTasks[s.id]);
+  if(!flagged.length){
+    body.innerHTML=`<div class="no-task"><div class="emoji">✅</div><h3>Everyone is engaged!</h3><p>Tasks will appear here automatically when someone is isolated for more than 20 seconds.</p></div>`;
+    return;
+  }
+  body.innerHTML=flagged.map(s=>{
+    const tasks=assignedTasks[s.id]||[];
+    const done=taskDone[s.id]||{};
+    const pct=Math.min((s.elapsed/isoTimeout)*100,100);
+    const items=tasks.map((t,idx)=>{
+      const d=!!done[idx];
+      return`<div class="task-item ${d?'done':''}" onclick="toggle('${s.id}',${idx})">
+        <div class="t-icon">${t.icon}</div>
+        <div class="t-info"><div class="task-text">${t.text}</div><div class="task-hint">${t.hint}</div></div>
+        ${d?'<div class="t-check">✓</div>':''}
+      </div>`;
+    }).join('');
+    return`<div class="task-person">
+      <div class="tph">
+        <div class="tph-icon">🧍</div>
+        <div>
+          <div class="tph-name">${s.id} <span class="tph-badge">Isolated</span></div>
+          <div class="tph-time">Alone for ${Math.floor(s.elapsed)}s</div>
+        </div>
+      </div>
+      <div class="iso-bar">
+        <div class="iso-bar-top"><span>Isolation time</span><span>${Math.floor(s.elapsed)}s / ${isoTimeout}s</span></div>
+        <div class="iso-track"><div class="iso-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="tasks-list">${items}</div>
+      <button class="new-tasks-btn" onclick="refresh('${s.id}')">↻ Get new tasks</button>
+    </div>`;
+  }).join('');
+}
+
+function toggle(pid,idx){
+  if(!taskDone[pid])taskDone[pid]={};
+  taskDone[pid][idx]=!taskDone[pid][idx];
+  renderTasks(lastStatuses);
+}
+function refresh(pid){
+  assignedTasks[pid]=pickTasks();taskDone[pid]={};
+  renderTasks(lastStatuses);
+}
+
+function updateClock(){document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);}
+setInterval(tick,1000);setInterval(updateClock,1000);
+updateClock();tick();
+</script>
+</body>
+</html>
