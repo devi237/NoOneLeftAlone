@@ -1,6 +1,3 @@
-Index · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,212 +7,167 @@ Copy
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#FAFAFA;
-  --card:#FFFFFF;
-  --muted:#F1F5F9;
-  --fg:#0F172A;
-  --sub:#64748B;
-  --border:#E2E8F0;
-  --accent:#0052FF;
-  --accent2:#4D7CFF;
-  --red:#EF4444;
-  --red-bg:#FEF2F2;
-  --green:#10B981;
-  --green-bg:#ECFDF5;
-  --amber:#F59E0B;
-  --amber-bg:#FFFBEB;
+  --bg:#FAFAFA;--card:#FFFFFF;--muted:#F1F5F9;--fg:#0F172A;--sub:#64748B;
+  --border:#E2E8F0;--accent:#0052FF;--accent2:#4D7CFF;
+  --red:#EF4444;--red-bg:#FEF2F2;
+  --green:#10B981;--green-bg:#ECFDF5;
+  --amber:#F59E0B;--amber-bg:#FFFBEB;
   --grad:linear-gradient(135deg,#0052FF,#4D7CFF);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
 
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:0.5;}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.5;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-@keyframes redglow{0%,100%{box-shadow:0 0 0 4px rgba(239,68,68,0.1);}50%{box-shadow:0 0 0 8px rgba(239,68,68,0.2);}}
 @keyframes slideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+@keyframes redglow{0%,100%{box-shadow:0 0 0 4px rgba(239,68,68,.1);}50%{box-shadow:0 0 0 10px rgba(239,68,68,.2);}}
 
-/* HEADER */
+/* ── HEADER ── */
 header{
   background:var(--card);border-bottom:1px solid var(--border);
-  padding:0 36px;height:64px;
+  padding:0 32px;height:64px;
   display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
 }
 .logo{display:flex;align-items:center;gap:12px;}
 .logo-icon{
-  width:38px;height:38px;border-radius:11px;
-  background:var(--grad);
+  width:38px;height:38px;border-radius:11px;background:var(--grad);
   display:flex;align-items:center;justify-content:center;font-size:18px;
-  box-shadow:0 4px 12px rgba(0,82,255,0.25);
-  animation:float 4s ease-in-out infinite;
+  box-shadow:0 4px 12px rgba(0,82,255,.25);animation:float 4s ease-in-out infinite;
 }
-.logo-name{font-family:'Calistoga',serif;font-size:19px;color:var(--fg);}
-
+.logo-name{font-size:18px;font-weight:700;color:var(--fg);}
 .live-pill{
   display:flex;align-items:center;gap:8px;
-  border:1px solid rgba(16,185,129,0.3);background:var(--green-bg);
-  border-radius:999px;padding:6px 16px;
-  font-size:12px;font-weight:600;color:var(--green);
+  border:1px solid rgba(16,185,129,.3);background:var(--green-bg);
+  border-radius:999px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--green);
 }
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite;}
+.clock{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--sub);}
 
-.clock{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--sub);}
-
-/* MAIN LAYOUT */
+/* ── LAYOUT ──
+   Col 1 & 2: stat cards (narrow)
+   Col 3: camera (wide — takes most space)
+   Col 4: task panel
+*/
 .page{
-  flex:1;padding:28px 36px;
+  flex:1;padding:24px 32px;
   display:grid;
-  grid-template-columns:1fr 1fr 1.8fr 1.4fr;
+  grid-template-columns:150px 150px 1fr 340px;
   grid-template-rows:auto 1fr;
-  gap:20px;
+  gap:18px;
 }
 
-/* STAT CARDS */
+/* ── STAT CARDS ── */
 .stat-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  padding:28px;box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:22px 18px;box-shadow:0 2px 10px rgba(0,0,0,.06);
   display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;
 }
-.stat-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;
-}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;}
 .stat-card.blue::before{background:var(--grad);}
 .stat-card.red::before{background:linear-gradient(90deg,var(--red),#FF8A8A);}
-
-.stat-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--sub);margin-bottom:12px;}
-.stat-num{font-family:'Calistoga',serif;font-size:72px;line-height:1;letter-spacing:-2px;}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-bottom:8px;}
+.stat-num{font-size:56px;font-weight:800;line-height:1;letter-spacing:-2px;}
 .stat-num.blue{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .stat-num.red{color:var(--red);}
-.stat-foot{font-size:13px;color:var(--sub);margin-top:10px;}
+.stat-foot{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.4;}
 
-/* FEED */
+/* ── CAMERA CARD ── */
 .feed-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.06);overflow:hidden;
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);overflow:hidden;
   display:flex;flex-direction:column;
   grid-row:1/3;
 }
 .feed-header{
+  padding:12px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.feed-title{font-size:13px;font-weight:700;}
+.feed-legend{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--sub);}
+.leg{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:8px;height:8px;border-radius:50%;}
+
+.feed-body{
+  flex:1;background:#0d0d0d;position:relative;overflow:hidden;min-height:260px;
+  display:flex;align-items:center;justify-content:center;
+}
+#cam-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;color:#444;font-size:13px;font-weight:500;
+  position:absolute;inset:0;z-index:1;
+}
+#cam-stream{
+  width:100%;height:100%;object-fit:contain;
+  display:none;position:relative;z-index:2;
+}
+
+.feed-controls{
+  padding:12px 18px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);
+}
+.btn-start{
+  padding:8px 20px;border-radius:999px;border:none;
+  background:var(--grad);color:#fff;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,82,255,.3);
+  transition:all .2s;
+}
+.btn-stop{
+  padding:8px 20px;border-radius:999px;
+  border:1.5px solid var(--border);background:transparent;
+  color:var(--sub);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .2s;opacity:.5;
+}
+.slider-wrap{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.slider-label{font-size:11px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+#distance-slider{width:120px;accent-color:var(--accent);cursor:pointer;}
+#distance-value{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;min-width:44px;}
+
+/* ── TASK PANEL ── */
+.task-card{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);overflow:hidden;
+  display:flex;flex-direction:column;grid-row:1/3;
+}
+.task-header{
   padding:14px 20px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
 }
-.feed-title{font-size:14px;font-weight:600;}
-.feed-legend{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--sub);}
-.legend-item{display:flex;align-items:center;gap:5px;}
-.legend-dot{width:8px;height:8px;border-radius:50%;}
-
-.feed-body{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 30% 40%,rgba(0,82,255,0.05),transparent 60%),var(--muted);
-  position:relative;overflow:hidden;
-}
-.feed-body::before{
-  content:'';position:absolute;inset:0;
-  background-image:radial-gradient(circle,rgba(0,82,255,0.1) 1px,transparent 1px);
-  background-size:28px 28px;opacity:0.4;
-}
-
-.cam-grid{
-  display:grid;
-  grid-template-columns:repeat(3,110px);
-  grid-template-rows:repeat(2,110px);
-  gap:44px;position:relative;z-index:1;
-}
-
-.pcard{
-  width:110px;height:150px;border-radius:16px;
-  background:var(--card);border:2px solid var(--border);
-  box-shadow:0 4px 14px rgba(0,0,0,0.08);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  position:relative;transition:all 0.3s ease;
-}
-.pcard.engaged{border-color:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,0.12);}
-.pcard.monitoring{border-color:var(--amber);box-shadow:0 0 0 4px rgba(245,158,11,0.12);}
-.pcard.isolated{border-color:var(--red);animation:redglow 1.5s ease-in-out infinite;}
-
-.pcard .avatar{font-size:38px;line-height:1;}
-.pcard .pid{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sub);font-weight:500;}
-
-.pcard .chip{
-  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
-  font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;
-}
-.pcard .chip.g{background:var(--green);color:#fff;}
-.pcard .chip.a{background:var(--amber);color:#fff;}
-.pcard .chip.r{background:var(--red);color:#fff;}
-
-.pcard .timer{
-  position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);
-  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-  padding:3px 10px;border-radius:999px;white-space:nowrap;border:1px solid;
-}
-.pcard .timer.a{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);}
-.pcard .timer.r{background:var(--red-bg);border-color:var(--red);color:var(--red);}
-
-/* TASK PANEL */
-.task-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.06);overflow:hidden;
-  display:flex;flex-direction:column;
-  grid-row:1/3;
-}
-.task-header{
-  padding:16px 22px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
 .task-title{font-size:14px;font-weight:700;}
-.task-count{
-  font-size:11px;font-weight:600;padding:3px 12px;border-radius:999px;transition:all 0.3s;
-}
-.task-count.active{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.3);}
-.task-count.zero{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.task-badge{font-size:11px;font-weight:600;padding:3px 12px;border-radius:999px;transition:all .3s;}
+.task-badge.zero{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.task-badge.alert{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3);}
 
 .task-body{flex:1;overflow-y:auto;}
-
 .no-task{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:40px 24px;gap:12px;text-align:center;min-height:200px;
 }
-.no-task .emoji{font-size:40px;}
+.no-task .emo{font-size:40px;}
 .no-task h3{font-size:15px;font-weight:700;}
 .no-task p{font-size:13px;color:var(--sub);line-height:1.6;}
 
-.task-person{padding:18px 22px;border-bottom:1px solid var(--border);animation:slideIn 0.3s ease;}
-.tph{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-.tph-icon{width:42px;height:42px;border-radius:12px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid rgba(239,68,68,0.15);}
-.tph-name{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.tph-badge{font-size:10px;font-weight:600;background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.3);padding:2px 8px;border-radius:999px;}
-.tph-time{font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace;margin-top:3px;}
+.person-block{padding:16px 20px;border-bottom:1px solid var(--border);animation:slideIn .3s ease;}
+.person-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.person-icon{width:40px;height:40px;border-radius:11px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(239,68,68,.15);}
+.person-name{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.iso-badge{font-size:10px;font-weight:600;background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3);padding:2px 8px;border-radius:999px;}
+.person-time{font-size:11px;color:var(--sub);font-family:'Share Tech Mono',monospace;margin-top:2px;}
 
-/* isolation progress */
-.iso-bar{margin-bottom:14px;}
-.iso-bar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:5px;}
+.iso-bar{margin-bottom:12px;}
+.iso-bar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:4px;}
 .iso-track{height:6px;background:var(--muted);border-radius:999px;overflow:hidden;}
-.iso-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--amber),var(--red));transition:width 0.6s ease;}
+.iso-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--amber),var(--red));transition:width .6s ease;}
 
-.tasks-list{display:flex;flex-direction:column;gap:8px;}
+.task-list{display:flex;flex-direction:column;gap:8px;}
 .task-item{
-  display:flex;align-items:flex-start;gap:12px;
-  background:var(--muted);border:1px solid var(--border);border-radius:12px;
-  padding:12px 14px;cursor:pointer;transition:all 0.2s ease;
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--muted);border:1px solid var(--border);
+  border-radius:11px;padding:10px 12px;
 }
-.task-item:hover{background:#fff;border-color:rgba(0,82,255,0.3);box-shadow:0 2px 10px rgba(0,82,255,0.1);transform:translateX(3px);}
-.task-item.done{background:var(--green-bg);border-color:rgba(16,185,129,0.3);}
-.task-item.done .task-text{text-decoration:line-through;color:var(--sub);}
-.t-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
-.t-info{flex:1;}
-.task-text{font-size:13px;font-weight:500;line-height:1.4;}
-.task-hint{font-size:11px;color:var(--sub);margin-top:2px;}
-.t-check{color:var(--green);font-size:16px;font-weight:700;align-self:center;}
-
-.new-tasks-btn{
-  width:100%;margin-top:10px;padding:10px;
-  background:transparent;border:1.5px solid var(--border);
-  color:var(--sub);font-size:12px;font-weight:500;font-family:'Inter',sans-serif;
-  border-radius:10px;cursor:pointer;transition:all 0.2s;
-}
-.new-tasks-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,82,255,0.04);}
+.t-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.t-text{font-size:12px;font-weight:500;line-height:1.4;color:var(--fg);}
 
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -230,20 +182,20 @@ header{
     <div class="logo-icon">👁</div>
     <div class="logo-name">NoOneLeftAlone.exe</div>
   </div>
-  <div class="live-pill"><div class="live-dot"></div> Live Detection</div>
+  <div class="live-pill"><div class="live-dot"></div>Live Detection</div>
   <div class="clock" id="clock">00:00:00</div>
 </header>
 
 <div class="page">
 
-  <!-- TOTAL PEOPLE -->
+  <!-- STAT: Total People -->
   <div class="stat-card blue">
     <div class="stat-label">Total People</div>
-    <div class="stat-num blue" id="total">6</div>
-    <div class="stat-foot" id="total-foot">Currently in frame</div>
+    <div class="stat-num blue" id="total">0</div>
+    <div class="stat-foot">Currently in frame</div>
   </div>
 
-  <!-- ISOLATED -->
+  <!-- STAT: Isolated -->
   <div class="stat-card red">
     <div class="stat-label">Isolated</div>
     <div class="stat-num red" id="iso">0</div>
@@ -253,53 +205,42 @@ header{
   <!-- CAMERA FEED -->
   <div class="feed-card">
     <div class="feed-header">
-      <div class="feed-title">Camera Feed</div>
+      <div class="feed-title">📹 Live Camera Feed</div>
       <div class="feed-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Engaged</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Watching</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Isolated</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Engaged</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--amber)"></div>Watching</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--red)"></div>Isolated</div>
       </div>
     </div>
-    <div class="feed-body" style="flex-direction:column;gap:0;padding:0;">
-      <div id="cam-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--sub);font-size:13px;font-weight:500;z-index:1;">
-        <div style="font-size:36px;">📷</div>
-        <div>Click <strong style="color:var(--accent)">Start Camera</strong> to begin detection</div>
+    <div class="feed-body">
+      <div id="cam-placeholder">
+        <div style="font-size:44px">📷</div>
+        <div>Click <strong style="color:var(--accent)">Start Camera</strong> to begin</div>
       </div>
-      <img id="cam-stream" src="" alt="Camera feed"
-        style="width:100%;height:100%;object-fit:cover;display:none;position:relative;z-index:2;">
+      <img id="cam-stream" src="" alt="camera">
     </div>
-    <div class="feed-controls" style="padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <button id="camera-on-btn"
-        style="padding:8px 18px;border-radius:999px;border:none;background:var(--grad);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,82,255,0.3);transition:all 0.2s;">
-        ▶ Start Camera
-      </button>
-      <button id="camera-off-btn"
-        style="padding:8px 18px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;">
-        ⏹ Stop Camera
-      </button>
-      <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
-        <label style="font-size:11px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;">
-          Distance Threshold
-        </label>
-        <input type="range" id="distance-slider" min="50" max="500" value="200"
-          style="width:110px;accent-color:var(--accent);cursor:pointer;">
-        <span id="distance-value"
-          style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;min-width:36px;">200</span>
+    <div class="feed-controls">
+      <button class="btn-start" id="btn-start">▶ Start Camera</button>
+      <button class="btn-stop" id="btn-stop">⏹ Stop Camera</button>
+      <div class="slider-wrap">
+        <span class="slider-label">Distance Threshold</span>
+        <input type="range" id="distance-slider" min="50" max="500" value="200">
+        <span id="distance-value">200px</span>
       </div>
     </div>
   </div>
 
-  <!-- TASKS -->
+  <!-- TASK PANEL -->
   <div class="task-card">
     <div class="task-header">
       <div class="task-title">🎯 Re-Engagement Tasks</div>
-      <div class="task-count zero" id="task-count">All Clear</div>
+      <div class="task-badge zero" id="task-badge">All Clear</div>
     </div>
     <div class="task-body" id="task-body">
       <div class="no-task">
-        <div class="emoji">✅</div>
+        <div class="emo">✅</div>
         <h3>Everyone is engaged!</h3>
-        <p>Tasks will appear here automatically when someone is isolated for more than 20 seconds.</p>
+        <p>Tasks appear automatically when someone is isolated for more than 20 seconds.</p>
       </div>
     </div>
   </div>
@@ -307,189 +248,120 @@ header{
 </div>
 
 <script>
-const TASKS=[
-  {icon:'👋',text:'Introduce yourself to someone new',hint:'Walk up to the nearest group'},
-  {icon:'🎤',text:'Share a fun fact about yourself',hint:'Break the ice with a story'},
-  {icon:'☕',text:'Offer to get someone a drink',hint:'Head to the refreshments together'},
-  {icon:'🃏',text:'Join the nearest game or activity',hint:'Games are better with more people!'},
-  {icon:'📸',text:'Take a group selfie',hint:'Will be shown on the main screen'},
-  {icon:'🤝',text:'Meet someone you have not talked to',hint:'Introduce yourself to a new face'},
-  {icon:'🎯',text:'Join the group challenge',hint:'Team up with at least 2 others'},
-  {icon:'💬',text:'Give someone a compliment',hint:'A kind word goes a long way'},
-  {icon:'🌟',text:'Ask for an event recommendation',hint:'What should you not miss today?'},
-  {icon:'🎲',text:'Suggest a fun group activity',hint:'Propose something to those around you'},
-];
-function pickTasks(){return[...TASKS].sort(()=>Math.random()-0.5).slice(0,3);}
+const ICONS = ['👋','🎤','☕','🃏','📸','🤝','🎯','💬','🌟','🎲'];
 
-const PERSONS=[
-  {id:'P-01',x:1,y:0},{id:'P-02',x:2,y:0},{id:'P-03',x:0,y:1},
-  {id:'P-04',x:1,y:1},{id:'P-05',x:2,y:1},{id:'P-06',x:3,y:0},
-];
+/* ── Clock ── */
+function tick(){ document.getElementById('clock').textContent = new Date().toTimeString().slice(0,8); }
+setInterval(tick, 1000); tick();
 
-/* ── Simulation variables ── */
-let isoThreshold=200,isoTimeout=20;
-
-/* ── Camera & Distance controls (Flask REST API) ── */
-let cameraActive = false;
-
-document.getElementById('camera-on-btn').addEventListener('click', async ()=>{
-  try {
-    await fetch('/start_camera', {method:'POST'});
-    cameraActive = true;
-    const img = document.getElementById('cam-stream');
-    img.src = '/video';
-    img.style.display = 'block';
-    document.getElementById('cam-placeholder').style.display = 'none';
-    document.getElementById('camera-on-btn').style.opacity = '0.5';
-    document.getElementById('camera-off-btn').style.opacity = '1';
-  } catch(e){ console.error('Start camera failed:', e); }
+/* ── Camera controls ── */
+document.getElementById('btn-start').addEventListener('click', async () => {
+  await fetch('/start_camera', { method: 'POST' });
+  document.getElementById('cam-stream').src = '/video';
+  document.getElementById('cam-stream').style.display = 'block';
+  document.getElementById('cam-placeholder').style.display = 'none';
+  document.getElementById('btn-start').style.opacity = '0.5';
+  document.getElementById('btn-stop').style.opacity = '1';
 });
 
-document.getElementById('camera-off-btn').addEventListener('click', async ()=>{
-  try {
-    await fetch('/stop_camera', {method:'POST'});
-    cameraActive = false;
-    const img = document.getElementById('cam-stream');
-    img.src = '';
-    img.style.display = 'none';
-    document.getElementById('cam-placeholder').style.display = 'flex';
-    document.getElementById('camera-on-btn').style.opacity = '1';
-    document.getElementById('camera-off-btn').style.opacity = '0.5';
-  } catch(e){ console.error('Stop camera failed:', e); }
+document.getElementById('btn-stop').addEventListener('click', async () => {
+  await fetch('/stop_camera', { method: 'POST' });
+  document.getElementById('cam-stream').src = '';
+  document.getElementById('cam-stream').style.display = 'none';
+  document.getElementById('cam-placeholder').style.display = 'flex';
+  document.getElementById('btn-start').style.opacity = '1';
+  document.getElementById('btn-stop').style.opacity = '0.5';
+  document.getElementById('total').textContent = '0';
+  document.getElementById('iso').textContent = '0';
+  document.getElementById('iso-foot').textContent = 'No one isolated';
+  document.getElementById('task-badge').textContent = 'All Clear';
+  document.getElementById('task-badge').className = 'task-badge zero';
+  document.getElementById('task-body').innerHTML = noTaskHTML('Camera stopped', 'Start the camera to begin detection.');
 });
 
-document.getElementById('distance-slider').addEventListener('input', async (e)=>{
+document.getElementById('distance-slider').addEventListener('input', async (e) => {
   const val = parseInt(e.target.value);
-  document.getElementById('distance-value').textContent = val;
-  isoThreshold = val;
-  try {
-    await fetch('/set_distance', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({distance: val})
-    });
-  } catch(e){ console.error('Set distance failed:', e); }
+  document.getElementById('distance-value').textContent = val + 'px';
+  await fetch('/set_distance', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ distance: val })
+  });
 });
-let isoStart={},personPos={};
-let taskDone={},assignedTasks={},prevFlagged={};
-let lastStatuses=[];
 
-function getPos(p){return personPos[p.id]||{px:p.x*140+60,py:p.y*160+50};}
+/* ── Poll /stats every second ── */
+setInterval(pollStats, 1000);
 
-function tick(){
-  const t=Date.now()/1000,now=Date.now();
+async function pollStats() {
+  let data;
+  try {
+    const res = await fetch('/stats');
+    if (!res.ok) return;
+    data = await res.json();
+  } catch(e) { return; }
 
-  personPos['P-06']={px:390+Math.sin(t*0.3)*80,py:50+Math.sin(t*0.2)*28};
-  ['P-01','P-02','P-03','P-04','P-05'].forEach((id,i)=>{
-    const b=PERSONS[i];
-    personPos[id]={px:b.x*140+60+Math.sin(t*0.4+i)*10,py:b.y*160+50+Math.cos(t*0.3+i)*7};
-  });
+  /* Stat cards */
+  document.getElementById('total').textContent = data.total || 0;
+  const isoCount = data.isolated || 0;
+  const isoEl = document.getElementById('iso');
+  isoEl.textContent = isoCount;
+  isoEl.style.color = isoCount > 0 ? 'var(--red)' : 'var(--green)';
+  document.getElementById('iso-foot').textContent = isoCount
+    ? `${isoCount} person${isoCount > 1 ? 's' : ''} alone >20s`
+    : 'No one isolated right now ✓';
 
-  let isolated={};
-  PERSONS.forEach(p=>{
-    const p1=getPos(p);let md=Infinity;
-    PERSONS.forEach(q=>{if(q.id===p.id)return;const d=Math.hypot(getPos(q).px-p1.px,getPos(q).py-p1.py);if(d<md)md=d;});
-    isolated[p.id]=md>isoThreshold;
-    if(isolated[p.id]){if(!isoStart[p.id])isoStart[p.id]=now;}
-    else{if(isoStart[p.id])delete isoStart[p.id];}
-  });
+  /* Badge */
+  const badge = document.getElementById('task-badge');
+  if (isoCount > 0) {
+    badge.textContent = isoCount + ' Alert' + (isoCount > 1 ? 's' : '');
+    badge.className = 'task-badge alert';
+  } else {
+    badge.textContent = 'All Clear';
+    badge.className = 'task-badge zero';
+  }
 
-  let isoCount=0;
-  lastStatuses=PERSONS.map(p=>{
-    const isIso=isolated[p.id];
-    const elapsed=isIso&&isoStart[p.id]?(now-isoStart[p.id])/1000:0;
-    const flagged=elapsed>=isoTimeout;
-    if(flagged){
-      isoCount++;
-      if(!prevFlagged[p.id]){assignedTasks[p.id]=pickTasks();taskDone[p.id]={};prevFlagged[p.id]=true;}
-    }else{
-      if(prevFlagged[p.id]){delete prevFlagged[p.id];delete assignedTasks[p.id];}
-    }
-    return{id:p.id,isIso,elapsed,flagged};
-  });
-
-  const total=PERSONS.length;
-  document.getElementById('total').textContent=total;
-  document.getElementById('iso').textContent=isoCount;
-  document.getElementById('iso-foot').textContent=isoCount?`${isoCount} person${isoCount>1?'s':''} standing alone >20s`:'No one isolated right now ✓';
-  document.getElementById('iso').style.color=isoCount?'var(--red)':'var(--green)';
-
-  const tc=document.getElementById('task-count');
-  tc.textContent=isoCount?isoCount+' Alert'+(isoCount>1?'s':''):'All Clear';
-  tc.className='task-count '+(isoCount?'active':'zero');
-
-  renderFeed(lastStatuses);
-  renderTasks(lastStatuses);
+  /* Task panel */
+  renderTasks(data.persons || []);
 }
 
-function renderFeed(ss){
-  const g=document.getElementById('cam-grid');g.innerHTML='';
-  ss.forEach((s,i)=>{
-    const p=PERSONS[i];
-    const cls=s.flagged?'isolated':s.isIso?'monitoring':'engaged';
-    const cc=s.flagged?'r':s.isIso?'a':'g';
-    const ct=s.flagged?'Isolated':s.isIso?'Watching':'Engaged';
-    let extra='';
-    if(s.isIso&&!s.flagged)extra=`<div class="timer a">${Math.ceil(isoTimeout-s.elapsed)}s</div>`;
-    else if(s.flagged)extra=`<div class="timer r">Tasks Sent</div>`;
-    const el=document.createElement('div');
-    el.className='pcard '+cls;
-    el.style.gridColumn=p.x+1;el.style.gridRow=p.y+1;
-    el.innerHTML=`<div class="chip ${cc}">${ct}</div><div class="avatar">🧍</div><div class="pid">${s.id}</div>${extra}`;
-    g.appendChild(el);
-  });
+function noTaskHTML(title, msg) {
+  return `<div class="no-task"><div class="emo">✅</div><h3>${title}</h3><p>${msg}</p></div>`;
 }
 
-function renderTasks(ss){
-  const body=document.getElementById('task-body');
-  const flagged=ss.filter(s=>s.flagged&&assignedTasks[s.id]);
-  if(!flagged.length){
-    body.innerHTML=`<div class="no-task"><div class="emoji">✅</div><h3>Everyone is engaged!</h3><p>Tasks will appear here automatically when someone is isolated for more than 20 seconds.</p></div>`;
+function renderTasks(persons) {
+  const body = document.getElementById('task-body');
+  const isolated = persons.filter(p => p.status === 'isolated' && p.tasks && p.tasks.length);
+
+  if (!isolated.length) {
+    body.innerHTML = noTaskHTML('Everyone is engaged!', 'Tasks appear automatically when someone is isolated for more than 20 seconds.');
     return;
   }
-  body.innerHTML=flagged.map(s=>{
-    const tasks=assignedTasks[s.id]||[];
-    const done=taskDone[s.id]||{};
-    const pct=Math.min((s.elapsed/isoTimeout)*100,100);
-    const items=tasks.map((t,idx)=>{
-      const d=!!done[idx];
-      return`<div class="task-item ${d?'done':''}" onclick="toggle('${s.id}',${idx})">
-        <div class="t-icon">${t.icon}</div>
-        <div class="t-info"><div class="task-text">${t.text}</div><div class="task-hint">${t.hint}</div></div>
-        ${d?'<div class="t-check">✓</div>':''}
-      </div>`;
-    }).join('');
-    return`<div class="task-person">
-      <div class="tph">
-        <div class="tph-icon">🧍</div>
-        <div>
-          <div class="tph-name">${s.id} <span class="tph-badge">Isolated</span></div>
-          <div class="tph-time">Alone for ${Math.floor(s.elapsed)}s</div>
+
+  body.innerHTML = isolated.map(p => {
+    const pct = Math.min((p.elapsed / 20) * 100, 100);
+    const taskItems = p.tasks.map((t, i) => `
+      <div class="task-item">
+        <div class="t-icon">${ICONS[i % ICONS.length]}</div>
+        <div class="t-text">${t}</div>
+      </div>`).join('');
+
+    return `
+      <div class="person-block">
+        <div class="person-head">
+          <div class="person-icon">🧍</div>
+          <div>
+            <div class="person-name">${p.id} <span class="iso-badge">Isolated</span></div>
+            <div class="person-time">Alone for ${Math.floor(p.elapsed)}s</div>
+          </div>
         </div>
-      </div>
-      <div class="iso-bar">
-        <div class="iso-bar-top"><span>Isolation time</span><span>${Math.floor(s.elapsed)}s / ${isoTimeout}s</span></div>
-        <div class="iso-track"><div class="iso-fill" style="width:${pct}%"></div></div>
-      </div>
-      <div class="tasks-list">${items}</div>
-      <button class="new-tasks-btn" onclick="refresh('${s.id}')">↻ Get new tasks</button>
-    </div>`;
+        <div class="iso-bar">
+          <div class="iso-bar-top"><span>Isolation time</span><span>${Math.floor(p.elapsed)}s / 20s</span></div>
+          <div class="iso-track"><div class="iso-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="task-list">${taskItems}</div>
+      </div>`;
   }).join('');
 }
-
-function toggle(pid,idx){
-  if(!taskDone[pid])taskDone[pid]={};
-  taskDone[pid][idx]=!taskDone[pid][idx];
-  renderTasks(lastStatuses);
-}
-function refresh(pid){
-  assignedTasks[pid]=pickTasks();taskDone[pid]={};
-  renderTasks(lastStatuses);
-}
-
-function updateClock(){document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);}
-setInterval(tick,1000);setInterval(updateClock,1000);
-updateClock();tick();
 </script>
 </body>
 </html>
