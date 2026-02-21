@@ -142,7 +142,7 @@ Webcam → OpenCV → YOLOv8 → Person boxes + centers
 
 ## 🎥 Demo Video
 
-📹 [Watch the Demo](https://your-demo-link-here.com)
+📹 [Watch the Demo](https://drive.google.com/drive/folders/1poAQha9ZKV4N5MXxprCwgPJLa4GenO2t?usp=drive_link)
 
 > Shows the full flow: camera start → group detection → isolation trigger → task assignment
 
